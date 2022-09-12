@@ -93,7 +93,7 @@ public:
     {
         subImu        = nh.subscribe<sensor_msgs::Imu>(imuTopic, 2000, &ImageProjection::imuHandler, this, ros::TransportHints().tcpNoDelay());
         subOdom       = nh.subscribe<nav_msgs::Odometry>(odomTopic+"_incremental", 2000, &ImageProjection::odometryHandler, this, ros::TransportHints().tcpNoDelay());
-        subLaserCloud = nh.subscribe<sensor_msgs::PointCloud2>(pointCloudTopic, 5, &ImageProjection::cloudHandler, this, ros::TransportHints().tcpNoDelay());
+        subLaserCloud = nh.subscribe<sensor_msgs::PointCloud2>("velodyne_points", 5, &ImageProjection::cloudHandler, this, ros::TransportHints().tcpNoDelay());
 
         pubExtractedCloud = nh.advertise<sensor_msgs::PointCloud2> ("lio_sam/deskew/cloud_deskewed", 1);
         pubLaserCloudInfo = nh.advertise<lio_sam::cloud_info> ("lio_sam/deskew/cloud_info", 1);
@@ -182,8 +182,8 @@ public:
         if (!cachePointCloud(laserCloudMsg))
             return;
 
-        if (!deskewInfo())
-            return;
+        //if (!deskewInfo())
+        //    return;
 
         projectPointCloud();
 
@@ -238,11 +238,11 @@ public:
         timeScanEnd = timeScanCur + laserCloudIn->points.back().time;
 
         // check dense flag
-        if (laserCloudIn->is_dense == false)
-        {
-            ROS_ERROR("Point cloud is not in dense format, please remove NaN points first!");
-            ros::shutdown();
-        }
+        //if (laserCloudIn->is_dense == false)
+        //{
+        //    ROS_ERROR("Point cloud is not in dense format, please remove NaN points first!");
+        //    ros::shutdown();
+        //}
 
         // check ring channel
         static int ringFlag = 0;

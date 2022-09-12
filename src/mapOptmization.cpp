@@ -167,7 +167,7 @@ public:
         pubLaserOdometryIncremental = nh.advertise<nav_msgs::Odometry> ("lio_sam/mapping/odometry_incremental", 1);
         pubPath                     = nh.advertise<nav_msgs::Path>("lio_sam/mapping/path", 1);
 
-        subCloud = nh.subscribe<lio_sam::cloud_info>("lio_sam/feature/cloud_info", 1, &mapOptimization::laserCloudInfoHandler, this, ros::TransportHints().tcpNoDelay());
+        subCloud = nh.subscribe<sensor_msgs::PointCloud2>("/velodyne_points", 1, &mapOptimization::laserCloudInfoHandler, this, ros::TransportHints().tcpNoDelay());
         subGPS   = nh.subscribe<nav_msgs::Odometry> (gpsTopic, 200, &mapOptimization::gpsHandler, this, ros::TransportHints().tcpNoDelay());
         subLoop  = nh.subscribe<std_msgs::Float64MultiArray>("lio_loop/loop_closure_detection", 1, &mapOptimization::loopInfoHandler, this, ros::TransportHints().tcpNoDelay());
 
@@ -234,16 +234,16 @@ public:
         matP = cv::Mat(6, 6, CV_32F, cv::Scalar::all(0));
     }
 
-    void laserCloudInfoHandler(const lio_sam::cloud_infoConstPtr& msgIn)
+    void laserCloudInfoHandler(const sensor_msgs::PointCloud2ConstPtr& msgIn)
     {
         // extract time stamp
         timeLaserInfoStamp = msgIn->header.stamp;
         timeLaserInfoCur = msgIn->header.stamp.toSec();
 
         // extract info and feature cloud
-        cloudInfo = *msgIn;
-        pcl::fromROSMsg(msgIn->cloud_corner,  *laserCloudCornerLast);
-        pcl::fromROSMsg(msgIn->cloud_surface, *laserCloudSurfLast);
+        //cloudInfo = *msgIn;
+        //pcl::fromROSMsg(msgIn->cloud_corner,  *laserCloudCornerLast);
+        pcl::fromROSMsg(*msgIn, *laserCloudSurfLast);
 
         std::lock_guard<std::mutex> lock(mtx);
 
@@ -1284,9 +1284,9 @@ public:
         if (cloudKeyPoses3D->points.empty())
             return;
 
-        if (laserCloudCornerLastDSNum > edgeFeatureMinValidNum && laserCloudSurfLastDSNum > surfFeatureMinValidNum)
+        //if (laserCloudCornerLastDSNum > edgeFeatureMinValidNum && laserCloudSurfLastDSNum > surfFeatureMinValidNum)
         {
-            kdtreeCornerFromMap->setInputCloud(laserCloudCornerFromMapDS);
+            //kdtreeCornerFromMap->setInputCloud(laserCloudCornerFromMapDS);
             kdtreeSurfFromMap->setInputCloud(laserCloudSurfFromMapDS);
 
             for (int iterCount = 0; iterCount < 30; iterCount++)
@@ -1294,7 +1294,7 @@ public:
                 laserCloudOri->clear();
                 coeffSel->clear();
 
-                cornerOptimization();
+                //cornerOptimization();
                 surfOptimization();
 
                 combineOptimizationCoeffs();
@@ -1304,9 +1304,10 @@ public:
             }
 
             transformUpdate();
-        } else {
-            ROS_WARN("Not enough features! Only %d edge and %d planar features available.", laserCloudCornerLastDSNum, laserCloudSurfLastDSNum);
-        }
+        } 
+        //else {
+        //    ROS_WARN("Not enough features! Only %d edge and %d planar features available.", laserCloudCornerLastDSNum, laserCloudSurfLastDSNum);
+        //}
     }
 
     void transformUpdate()
