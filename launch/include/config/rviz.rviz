@@ -4,14 +4,10 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /Odometry1
         - /Point Cloud1
         - /Feature Cloud1
-        - /Mapping1
-        - /Odometry2
+        - /Mapping1/Map (cloud)1
         - /Odometry2/Shape1
-        - /Grid1
         - /Odometry3/Shape1
       Splitter Ratio: 0.5600000023841858
     Tree Height: 417
@@ -237,7 +233,7 @@ Visualization Manager:
           Use Fixed Frame: true
           Use rainbow: true
           Value: false
-      Enabled: false
+      Enabled: true
       Name: Point Cloud
     - Class: rviz/Group
       Displays:
@@ -310,16 +306,16 @@ Visualization Manager:
         - Alpha: 0.30000001192092896
           Autocompute Intensity Bounds: false
           Autocompute Value Bounds:
-            Max Value: 7.4858574867248535
-            Min Value: -1.2309398651123047
+            Max Value: 15.782175064086914
+            Min Value: -0.6249570846557617
             Value: true
           Axis: Z
           Channel Name: intensity
           Class: rviz/PointCloud2
           Color: 255; 255; 255
-          Color Transformer: Intensity
+          Color Transformer: AxisColor
           Danger Color: 0; 0; 255
-          Decay Time: 300
+          Decay Time: 30000
           Enabled: true
           Free Color: 255; 255; 255
           Invert Rainbow: false
@@ -332,7 +328,7 @@ Visualization Manager:
           Position Transformer: XYZ
           Queue Size: 10
           Selectable: false
-          Size (Pixels): 2
+          Size (Pixels): 1
           Size (m): 0.009999999776482582
           Style: Points
           Topic: /lio_sam/mapping/cloud_registered
@@ -484,7 +480,8 @@ Visualization Manager:
           Marker Topic: /lio_sam/mapping/loop_closure_constraints
           Name: Loop constraint
           Namespaces:
-            {}
+            loop_edges: true
+            loop_nodes: true
           Queue Size: 100
           Value: true
       Enabled: true
@@ -529,8 +526,8 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: false
-      Enabled: true
-      Keep: 10000
+      Enabled: false
+      Keep: 1
       Name: Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
@@ -543,9 +540,9 @@ Visualization Manager:
         Shaft Length: 0.10000000149011612
         Shaft Radius: 0.05000000074505806
         Value: Arrow
-      Topic: /odometry/imu_incremental
+      Topic: /lio_sam/mapping/odometry
       Unreliable: false
-      Value: true
+      Value: false
     - Alpha: 0.5
       Cell Size: 1
       Class: rviz/Grid
@@ -581,8 +578,8 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: false
-      Enabled: false
-      Keep: 10000
+      Enabled: true
+      Keep: 1
       Name: Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
@@ -595,12 +592,12 @@ Visualization Manager:
         Shaft Length: 1
         Shaft Radius: 0.05000000074505806
         Value: Arrow
-      Topic: /odometry/imu_incremental
+      Topic: /lio_sam/mapping/odometry
       Unreliable: false
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
-    Background Color: 238; 238; 236
+    Background Color: 0; 0; 0
     Default Light: true
     Fixed Frame: odom
     Frame Rate: 30
@@ -614,25 +611,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.5587480068206787
+      Distance: 79.14410400390625
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.5570347905158997
-        Y: 0.9182085394859314
-        Z: -0.389706552028656
+        X: 81.5383071899414
+        Y: -20.300783157348633
+        Z: 5.464441299438477
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0547969341278076
+      Pitch: 0.7397966980934143
       Target Frame: map
       Value: Orbit (rviz)
-      Yaw: 3.7881875038146973
+      Yaw: 1.5663697719573975
     Saved: ~
 Window Geometry:
   Displays:
@@ -648,5 +645,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1389
-  X: 1987
+  X: 531
   Y: 27
